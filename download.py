@@ -21,7 +21,7 @@ def scrapvideofromurl():
 
         chrome_path = "/usr/bin/google-chrome"
 
-        browser = p.chromium.launch(headless=False, executable_path=chrome_path)
+        browser = p.chromium.launch(headless=True, executable_path=chrome_path)
         context = browser.new_context()
         page = context.new_page()
 

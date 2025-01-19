@@ -1,18 +1,18 @@
 from playwright.sync_api import sync_playwright
+from download import scrapvideofromurl
+# arena-breakout-infinite
 
-def askfortwitchcategory():
-    print("Please enter the category you want to scrap: ")
-    twitchname = input()
-    url = "https://www.twitch.tv/directory/category/" + twitchname + "/clips?range=24hr"
-    
+def  askfortwitchcategory(textinput):
+    url = "https://www.twitch.tv/directory/category/" + textinput + "/clips?range=24hr"
+    scrapurlclipsfromtwitch(url)
     return url
 
 
-def scrapurlclipsfromtwitch():
+def scrapurlclipsfromtwitch(url):
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
-        page.goto(askfortwitchcategory())
+        page.goto(url)
 
         page.wait_for_timeout(5000)
 
@@ -23,9 +23,7 @@ def scrapurlclipsfromtwitch():
             for link in extracted_links:
                 f.write(link + "\n") 
 
+        scrapvideofromurl()
         browser.close()
-
-scrapurlclipsfromtwitch()
-
 
 
