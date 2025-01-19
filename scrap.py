@@ -1,11 +1,8 @@
-# arena-breakout-infinite
 from playwright.sync_api import sync_playwright
 
-twitchname = "arena-breakout-infinite"
-
 def askfortwitchcategory():
-    # print("Please enter the category you want to scrap: ")
-    # twitchname = input()
+    print("Please enter the category you want to scrap: ")
+    twitchname = input()
     url = "https://www.twitch.tv/directory/category/" + twitchname + "/clips?range=24hr"
     
     return url
