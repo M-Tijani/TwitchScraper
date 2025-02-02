@@ -1,5 +1,6 @@
 from playwright.async_api import async_playwright
 from download import scrapvideofromurl
+import os
 
 
 async def askfortwitchcategory(textinput):
@@ -19,9 +20,11 @@ async def scrapurlclipsfromtwitch(url):
         clip_links = await page.locator("a[href*='/clip/']").all()
         extracted_links = list(set([f"https://www.twitch.tv{await link.get_attribute('href')}" for link in clip_links]))
 
-        with open("twitchclips.txt", "w") as f:
-            for link in extracted_links:
-                f.write(link + "\n")
+        if os.path.exists("twitchclips.txt"):
+            os.remove("twitchclips.txt")
+            with open("twitchclips.txt", "w") as f:
+                for link in extracted_links:
+                    f.write(link + "\n")
 
         await browser.close()
         await scrapvideofromurl()
