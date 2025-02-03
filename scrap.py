@@ -11,17 +11,23 @@ async def askfortwitchcategory(textinput):
 
 async def scrapurlclipsfromtwitch(url):
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True)
+        browser = await p.chromium.launch(headless=False)
         page = await browser.new_page()
         await page.goto(url)
 
-        await page.wait_for_timeout(5000)
+        await page.click("button[aria-haspopup='true']") 
+        await page.click("text=English")
+        await page.wait_for_timeout(10000)
 
         clip_links = await page.locator("a[href*='/clip/']").all()
         extracted_links = list(set([f"https://www.twitch.tv{await link.get_attribute('href')}" for link in clip_links]))
 
         if os.path.exists("twitchclips.txt"):
             os.remove("twitchclips.txt")
+            with open("twitchclips.txt", "w") as f:
+                for link in extracted_links:
+                    f.write(link + "\n")
+        else:
             with open("twitchclips.txt", "w") as f:
                 for link in extracted_links:
                     f.write(link + "\n")
